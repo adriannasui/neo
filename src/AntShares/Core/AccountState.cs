@@ -7,12 +7,12 @@ using System.Linq;
 
 namespace AntShares.Core
 {
-    public class AccountState : StateBase, ICloneable<AccountState>, IAccountState
+    public class AccountState : StateBase, ICloneable<AccountState>
     {
-        public UInt160 ScriptHash { get; set; }
-        public bool IsFrozen { get; set; }
-        public ECPoint[] Votes { get; set; }
-        public Dictionary<UInt256, Fixed8> Balances { get; set; }
+        public UInt160 ScriptHash;
+        public bool IsFrozen;
+        public ECPoint[] Votes;
+        public Dictionary<UInt256, Fixed8> Balances;
 
         public override int Size => base.Size + ScriptHash.Size + sizeof(bool) + Votes.GetVarSize()
             + IO.Helper.GetVarSize(Balances.Count) + Balances.Count * (32 + 8);

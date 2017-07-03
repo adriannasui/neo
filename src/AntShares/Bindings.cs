@@ -35,7 +35,6 @@ namespace AntShares
             Container container = new Container();
 
             // Core
-            container.Register<IAccountState, AccountState>();
 
             // optional, verify
             container.Verify();
