@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using AntShares.Core;
 using FluentAssertions;
 using AntShares.Cryptography.ECC;
