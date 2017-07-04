@@ -162,7 +162,7 @@ namespace AntShares.UnitTests
             uut.Votes = array;
             uut.Balances = dict;
 
-            uut.Size.Should().Be(224); // 1 + 20 + 1 + 1 + 1 + 1 * (32 + 8)
+            uut.Size.Should().Be(224); // 1 + 20 + 1 + 1 + 1 + 5 * (32 + 8)
         }
 
         [TestMethod]
@@ -181,7 +181,7 @@ namespace AntShares.UnitTests
             uut.Votes = array;
             uut.Balances = dict;
 
-            uut.Size.Should().Be(229); // 1 + 20 + 1 + 1 + 1 + 1 * (32 + 8)
+            uut.Size.Should().Be(229); // 1 + 20 + 1 + 6 + 1 + 5 * (32 + 8)
         }
 
         private void setupAccountStateWithValues(AccountState accState, out UInt160 scriptHashVal, out ECPoint votesVal, out UInt256 key, out Fixed8 dictVal)
