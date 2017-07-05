@@ -5,6 +5,7 @@ using AntShares.Cryptography.ECC;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using AntShares.UnitTest;
 
 namespace AntShares.UnitTests
 {
@@ -135,17 +136,6 @@ namespace AntShares.UnitTests
             uut.Size.Should().Be(64); // 1 + 20 + 1 + 1 + 1 + 1 * (32 + 8)
         }
 
-        private byte[] get32ByteArray(byte firstByte)
-        {
-            byte[] array = new byte[32];
-            array[0] = firstByte;
-            for (int i=1; i<32; i++)
-            {
-                array[i] = 0x20;
-            }
-            return array;
-        }
-
         [TestMethod]
         public void Size_Get_0_Votes_5_Balance()
         {
@@ -153,10 +143,10 @@ namespace AntShares.UnitTests
             ECPoint[] array = new ECPoint[0];
             Dictionary<UInt256, Fixed8> dict = new Dictionary<UInt256, Fixed8>();
             dict.Add(new UInt256(), new Fixed8());
-            dict.Add(new UInt256(get32ByteArray(0x20)), new Fixed8());
-            dict.Add(new UInt256(get32ByteArray(0x21)), new Fixed8());
-            dict.Add(new UInt256(get32ByteArray(0x22)), new Fixed8());
-            dict.Add(new UInt256(get32ByteArray(0x23)), new Fixed8());
+            dict.Add(new UInt256(TestUtils.GetByteArray(32, 0x20)), new Fixed8());
+            dict.Add(new UInt256(TestUtils.GetByteArray(32, 0x21)), new Fixed8());
+            dict.Add(new UInt256(TestUtils.GetByteArray(32, 0x22)), new Fixed8());
+            dict.Add(new UInt256(TestUtils.GetByteArray(32, 0x23)), new Fixed8());
 
             uut.ScriptHash = val;
             uut.Votes = array;
@@ -172,10 +162,10 @@ namespace AntShares.UnitTests
             ECPoint[] array = new ECPoint[] { new ECPoint(), new ECPoint(), new ECPoint(), new ECPoint(), new ECPoint() };
             Dictionary<UInt256, Fixed8> dict = new Dictionary<UInt256, Fixed8>();
             dict.Add(new UInt256(), new Fixed8());
-            dict.Add(new UInt256(get32ByteArray(0x20)), new Fixed8());
-            dict.Add(new UInt256(get32ByteArray(0x21)), new Fixed8());
-            dict.Add(new UInt256(get32ByteArray(0x22)), new Fixed8());
-            dict.Add(new UInt256(get32ByteArray(0x23)), new Fixed8());
+            dict.Add(new UInt256(TestUtils.GetByteArray(32, 0x20)), new Fixed8());
+            dict.Add(new UInt256(TestUtils.GetByteArray(32, 0x21)), new Fixed8());
+            dict.Add(new UInt256(TestUtils.GetByteArray(32, 0x22)), new Fixed8());
+            dict.Add(new UInt256(TestUtils.GetByteArray(32, 0x23)), new Fixed8());
 
             uut.ScriptHash = val;
             uut.Votes = array;

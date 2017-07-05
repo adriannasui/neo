@@ -60,7 +60,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestUtils.cs" />
     <Compile Include="UT_AccountState.cs" />
+    <Compile Include="UT_AssetState.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

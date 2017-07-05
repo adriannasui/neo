@@ -15,5 +15,6 @@ To run the tests, build the solution to discover tests, then view and run the te
 Coverage
 ====================
 
-/Core
-	AccountState.cs
+* Core
+	* AccountState.cs
+	* AssetState.cs
