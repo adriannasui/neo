@@ -1,5 +1,6 @@
 ﻿using AntShares.Core;
 using AntShares.VM;
+using AntShares.Wallets;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -101,6 +102,32 @@ namespace AntShares.UnitTest
             };
         }
 
+        private static ClaimTransaction getClaimTransaction()
+        {
+            return new ClaimTransaction
+            {
+                Claims = new CoinReference[0]
+            };
+        }
+
+        private static IssueTransaction getIssueTransaction()
+        {
+            return new IssueTransaction
+            {
+                Attributes = new TransactionAttribute[0],
+                Inputs = new CoinReference[0],
+                Outputs = new TransactionOutput[0],
+                Scripts = new[]
+                {
+                    new Witness
+                    {
+                        InvocationScript = new byte[0],
+                        VerificationScript = new[] { (byte)OpCode.PUSHT }
+                    }
+                }
+            };
+        }
+
         [TestMethod]
         public void Size_Get_1_Transaction()
         {
@@ -140,7 +167,7 @@ namespace AntShares.UnitTest
         }
 
         [TestMethod]
-        public void CalculateNetFee()
+        public void CalculateNetFee_EmptyTransactions()
         {
             UInt256 val256;
             uint timestampVal, indexVal;
@@ -148,7 +175,58 @@ namespace AntShares.UnitTest
             Witness scriptVal;
             setupBlockWithValues(out val256, out timestampVal, out indexVal, out consensusDataVal, out scriptVal);
 
-            throw new NotImplementedException();
+            Block.CalculateNetFee(uut.Transactions).Should().Be(Fixed8.Zero);
+        }
+
+        [TestMethod]
+        public void CalculateNetFee_Ignores_MinerTransactions()
+        {
+            UInt256 val256;
+            uint timestampVal, indexVal;
+            ulong consensusDataVal;
+            Witness scriptVal;
+            setupBlockWithValues(out val256, out timestampVal, out indexVal, out consensusDataVal, out scriptVal);
+
+            uut.Transactions = new Transaction[1] {
+                getMinerTransaction()
+            };
+
+            Block.CalculateNetFee(uut.Transactions).Should().Be(Fixed8.Zero);
+        }
+
+        [TestMethod]
+        public void CalculateNetFee_Ignores_ClaimTransactions()
+        {
+            UInt256 val256;
+            uint timestampVal, indexVal;
+            ulong consensusDataVal;
+            Witness scriptVal;
+            setupBlockWithValues(out val256, out timestampVal, out indexVal, out consensusDataVal, out scriptVal);
+
+            uut.Transactions = new Transaction[1] {
+                getClaimTransaction()
+            };
+
+            Block.CalculateNetFee(uut.Transactions).Should().Be(Fixed8.Zero);
+        }
+
+
+        [TestMethod]
+        public void CalculateNetFee_In()
+        {
+            UInt256 val256;
+            uint timestampVal, indexVal;
+            ulong consensusDataVal;
+            Witness scriptVal;
+            setupBlockWithValues(out val256, out timestampVal, out indexVal, out consensusDataVal, out scriptVal);
+
+            uut.Transactions = new Transaction[1] {
+                getIssueTransaction()
+            };
+
+            Block.CalculateNetFee(uut.Transactions).Should().Be(new Fixed8(10));
+
+            throw new NotImplementedException("Need to finish this test");
         }
     }
 }
