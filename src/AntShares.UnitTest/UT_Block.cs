@@ -1,4 +1,5 @@
 ﻿using AntShares.Core;
+using AntShares.Cryptography.ECC;
 using AntShares.VM;
 using AntShares.Wallets;
 using FluentAssertions;
@@ -110,13 +111,22 @@ namespace AntShares.UnitTest
             };
         }
 
+        private static readonly ECPoint[] StandbyValidators = new ECPoint[] { ECPoint.DecodePoint("03b209fd4f53a7170ea4444e0cb0a6bb6a53c2bd016926989cf85f9b0fba17a70c".HexToBytes(), ECCurve.Secp256r1)  };
         private static IssueTransaction getIssueTransaction()
         {
             return new IssueTransaction
             {
                 Attributes = new TransactionAttribute[0],
                 Inputs = new CoinReference[0],
-                Outputs = new TransactionOutput[0],
+                Outputs = new[]
+                {
+                    new TransactionOutput
+                    {
+                        AssetId = UInt256.Zero,
+                        Value = Fixed8.FromDecimal(100),
+                        ScriptHash = Contract.CreateMultiSigRedeemScript(1, new ECPoint[] { ECPoint.DecodePoint("03b209fd4f53a7170ea4444e0cb0a6bb6a53c2bd016926989cf85f9b0fba17a70c".HexToBytes(), ECCurve.Secp256r1)  }).ToScriptHash()
+                    }
+                },
                 Scripts = new[]
                 {
                     new Witness
