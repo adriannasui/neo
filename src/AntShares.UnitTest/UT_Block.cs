@@ -112,7 +112,7 @@ namespace AntShares.UnitTest
         }
 
         private static readonly ECPoint[] StandbyValidators = new ECPoint[] { ECPoint.DecodePoint("03b209fd4f53a7170ea4444e0cb0a6bb6a53c2bd016926989cf85f9b0fba17a70c".HexToBytes(), ECCurve.Secp256r1)  };
-        private static IssueTransaction getIssueTransaction()
+        private static IssueTransaction getIssueTransaction(decimal outputVal)
         {
             return new IssueTransaction
             {
@@ -122,8 +122,8 @@ namespace AntShares.UnitTest
                 {
                     new TransactionOutput
                     {
-                        AssetId = UInt256.Zero,
-                        Value = Fixed8.FromDecimal(100),
+                        AssetId = Blockchain.SystemCoin.Hash,
+                        Value = Fixed8.FromDecimal(outputVal),
                         ScriptHash = Contract.CreateMultiSigRedeemScript(1, new ECPoint[] { ECPoint.DecodePoint("03b209fd4f53a7170ea4444e0cb0a6bb6a53c2bd016926989cf85f9b0fba17a70c".HexToBytes(), ECCurve.Secp256r1)  }).ToScriptHash()
                     }
                 },
@@ -222,7 +222,7 @@ namespace AntShares.UnitTest
 
 
         [TestMethod]
-        public void CalculateNetFee_In()
+        public void CalculateNetFee_Out()
         {
             UInt256 val256;
             uint timestampVal, indexVal;
@@ -231,12 +231,26 @@ namespace AntShares.UnitTest
             setupBlockWithValues(out val256, out timestampVal, out indexVal, out consensusDataVal, out scriptVal);
 
             uut.Transactions = new Transaction[1] {
-                getIssueTransaction()
+                getIssueTransaction(100)
             };
 
-            Block.CalculateNetFee(uut.Transactions).Should().Be(new Fixed8(10));
-
-            throw new NotImplementedException("Need to finish this test");
+            Block.CalculateNetFee(uut.Transactions).Should().Be(Fixed8.FromDecimal(-100));
         }
+
+        //[TestMethod]
+        //public void CalculateNetFee_In()
+        //{
+        //    UInt256 val256;
+        //    uint timestampVal, indexVal;
+        //    ulong consensusDataVal;
+        //    Witness scriptVal;
+        //    setupBlockWithValues(out val256, out timestampVal, out indexVal, out consensusDataVal, out scriptVal);
+
+        //    uut.Transactions = new Transaction[1] {
+        //        getIssueTransaction(0)
+        //    };
+
+        //    Block.CalculateNetFee(uut.Transactions).Should().Be(Fixed8.FromDecimal(100));
+        //}
     }
 }
