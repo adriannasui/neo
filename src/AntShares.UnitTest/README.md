@@ -11,6 +11,8 @@ Structure
 We use built in Visual Studio functionality with MSTest and the Microsoft.VisualStudio.TestPlatform.TestFramework package. 
 
 To run the tests, build the solution to discover tests, then view and run the tests from the 'Test Explorer' window within Visual Studio.
+OR
+With .NET Core SDK installed, use the CLI to navigate to the src\AntShares.UnitTest and use the command 'dotnet test'
 
 Coverage
 ====================
